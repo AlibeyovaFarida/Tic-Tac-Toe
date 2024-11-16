@@ -8,10 +8,22 @@
 import UIKit
 
 class ViewController: UIViewController {
+    // all variables
     enum Turn {
         case Nought
         case Cross
     }
+    var firstTurn = Turn.Cross
+    var currentTurn = Turn.Cross
+    var NOUGHT = "O"
+    var CROSS = "X"
+    var crossesScore = 0
+    var noughtsScore = 0
+    var board = [UIButton]()
+    // // // // // // // // // // // // // // // //
+    
+    
+    // all ui components
     private let turnTitleLabel: UILabel = {
         let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
@@ -130,15 +142,7 @@ class ViewController: UIViewController {
         btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
     }()
-    
-    var firstTurn = Turn.Cross
-    var currentTurn = Turn.Cross
-    
-    var NOUGHT = "O"
-    var CROSS = "X"
-    var crossesScore = 0
-    var noughtsScore = 0
-    var board = [UIButton]()
+    // // // // // // // // // // // // // // // // // // // // // // // // // //
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -146,6 +150,8 @@ class ViewController: UIViewController {
         setupUI()
         setupAction()
     }
+    
+    // Setup constraints function
     private func setupUI(){
         view.addSubview(turnTitleLabel)
         view.addSubview(turnLabel)
@@ -182,7 +188,9 @@ class ViewController: UIViewController {
             c3Button.heightAnchor.constraint(equalToConstant: 100)
         ])
     }
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
     
+    // all button actions
     private func setupAction(){
         initBoard()
         a1Button.addTarget(self, action: #selector(addToBoard(_:)), for: .touchUpInside)
@@ -195,6 +203,7 @@ class ViewController: UIViewController {
         c2Button.addTarget(self, action: #selector(addToBoard(_:)), for: .touchUpInside)
         c3Button.addTarget(self, action: #selector(addToBoard(_:)), for: .touchUpInside)
     }
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
     
     @objc
     private func addToBoard(_ sender: UIButton){
@@ -211,6 +220,11 @@ class ViewController: UIViewController {
         }
         
         sender.isEnabled = false
+        checkWinningSide()
+    }
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+    
+    func checkWinningSide(){
         if checkForVictory(CROSS){
             crossesScore+=1
             resultAlert(title: "Crosses win!")
@@ -223,7 +237,7 @@ class ViewController: UIViewController {
             resultAlert(title: "Finish")
         }
     }
-    
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
     
     func initBoard(){
         board.append(a1Button)
@@ -236,6 +250,7 @@ class ViewController: UIViewController {
         board.append(c2Button)
         board.append(c3Button)
     }
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
     
     func checkForVictory(_ s: String) -> Bool {
         
@@ -271,10 +286,12 @@ class ViewController: UIViewController {
         
         return false
     }
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
     
     func thisSymbol(_ button: UIButton, _ symbol: String) -> Bool {
         return button.title(for: .normal) == symbol
     }
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
     
     func resultAlert(title: String){
         let message = "\nNoughts " + String(noughtsScore) + "\nCrosses " + String(crossesScore)
@@ -285,6 +302,7 @@ class ViewController: UIViewController {
         alertController.addAction(alertAction)
         self.present(alertController, animated: true)
     }
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
     
     func resetBoard(){
         for button in board{
@@ -300,6 +318,7 @@ class ViewController: UIViewController {
         }
         currentTurn = firstTurn
     }
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
     
     func fullBoard() -> Bool {
         for button in board {
@@ -309,5 +328,6 @@ class ViewController: UIViewController {
         }
         return true
     }
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 }
 
